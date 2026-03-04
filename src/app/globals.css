@@ -1,26 +1,412 @@
 @import "tailwindcss";
 
+/* ── 헤더 반응형 ── */
+.header-nav { display: none; gap: 36px; }
+.header-cta { display: none; gap: 12px; align-items: center; }
+.header-mobile-btn { display: flex; }
+@media (min-width: 768px) {
+  .header-nav { display: flex; }
+  .header-cta { display: flex; }
+  .header-mobile-btn { display: none; }
+}
+
+/* ── 섭외문의 그리드 반응형 ── */
+.match-grid { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 1024px) { .match-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 768px)  { .match-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 480px)  { .match-grid { grid-template-columns: 1fr; } }
+
+/* ─────────────────────────────────────────
+   뷰티온다 Design System
+   기존 beautyonda.com style.css 기반
+───────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colors */
+  --color-primary:    #5b0000;
+  --color-primary-dark: #790000;
+  --color-bg-cream:   #fff5ed;
+  --color-bg-light:   #fff5ee;
+  --color-text-dark:  #141414;
+  --color-text-gray:  #3e3e3e;
+  --color-white:      #ffffff;
+
+  /* Fonts */
+  --font-pretendard: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  --font-serif:      'Cormorant', Georgia, serif;
+  --font-eng-bold:   'Montserrat', Arial, sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary:    var(--color-primary);
+  --color-bg-cream:   var(--color-bg-cream);
+  --color-bg-light:   var(--color-bg-light);
+  --color-text-dark:  var(--color-text-dark);
+  --color-text-gray:  var(--color-text-gray);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ─── Reset ─── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-pretendard);
+  color: var(--color-text-dark);
+  line-height: 1.5;
+  background-color: var(--color-white);
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ─── Container ─── */
+.container {
+  width: 90%;
+  max-width: 1440px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ─── Section Backgrounds ─── */
+.bg-cream  { background-color: var(--color-bg-cream); }
+.bg-light  { background-color: var(--color-bg-light); }
+.bg-primary { background-color: var(--color-primary); }
+.bg-dark   { background-color: #111111; }
+
+/* ─── Typography ─── */
+.font-serif    { font-family: var(--font-serif); }
+.font-eng-bold { font-family: var(--font-eng-bold); }
+
+.hero-slogan {
+  font-family: var(--font-pretendard);
+  font-size: 64px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+
+.hero-title {
+  font-size: 32px;
+  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: -1.28px;
+}
+
+.hero-subtitle {
+  font-size: 24px;
+  line-height: 1.6;
+  font-weight: 500;
+  opacity: 0.9;
+  letter-spacing: -0.96px;
+}
+
+.section-title-sm {
+  font-size: 42px;
+  font-weight: 800;
+  color: #2d2d2d;
+  line-height: 1.4;
+  letter-spacing: -1.92px;
+}
+
+.section-title-center {
+  font-size: 36px;
+  font-weight: 800;
+  color: #000;
+}
+
+/* ─── Stats ─── */
+.stat-number {
+  font-family: var(--font-pretendard);
+  font-size: 94px;
+  color: var(--color-primary);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -1.56px;
+}
+
+/* ─── Buttons ─── */
+.btn-primary {
+  display: inline-block;
+  background-color: var(--color-primary-dark);
+  color: #fff;
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-pretendard);
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #900000;
+}
+
+.btn-outline-white {
+  display: inline-block;
+  padding: 15px 40px;
+  font-size: 16px;
+  font-weight: 700;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-outline-white:hover {
+  background: #fff;
+  color: var(--color-primary);
+}
+
+.btn-outline-dark {
+  display: inline-block;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: 700;
+  border: 1px solid var(--color-primary);
+  background: transparent;
+  color: var(--color-primary);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-outline-dark:hover {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ─── Cards ─── */
+.instructor-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.instructor-img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background-color: #eee;
+  margin-bottom: 20px;
+  background-size: cover;
+  background-position: center;
+  border-radius: 0;
+}
+
+.instructor-info h3 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  color: #141414;
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.instructor-info .role {
+  font-size: 16px;
+  font-weight: 400;
+  color: #141414;
+}
+
+.instructor-info .desc {
+  font-size: 15px;
+  color: #666;
+  font-weight: 400;
+}
+
+/* ─── Badge ─── */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.badge-outline {
+  background: transparent;
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ─── Filter Chips ─── */
+.filter-chip {
+  border: 1px solid #ddd;
+  padding: 6px 16px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: #fff;
+  color: var(--color-text-dark);
+}
+
+.filter-chip:hover,
+.filter-chip.active {
+  background: var(--color-primary);
+  color: #fff;
+  border-color: var(--color-primary);
+}
+
+/* ─── Form ─── */
+.form-input {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+  background: transparent;
+  font-size: 15px;
+  font-family: var(--font-pretendard);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  border-bottom-color: var(--color-primary);
+}
+
+.form-input-box {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  background: #fff;
+  font-size: 15px;
+  font-family: var(--font-pretendard);
+  outline: none;
+}
+
+/* ─── Step Indicator (매칭 신청) ─── */
+.step-bar {
+  display: flex;
+  gap: 0;
+  margin-bottom: 60px;
+}
+
+.step-item {
+  flex: 1;
+  text-align: center;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #aaa;
+  border-bottom: 3px solid #eee;
+  transition: all 0.3s;
+}
+
+.step-item.active {
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
+}
+
+.step-item.done {
+  color: #999;
+  border-bottom-color: #ccc;
+}
+
+/* ─── News Card ─── */
+.news-card {
+  background: #fff;
+  padding: 20px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+}
+
+.news-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: #eee;
+  margin-bottom: 20px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ─── Floating Banner ─── */
+.floating-banner {
+  position: fixed;
+  right: 30px;
+  bottom: 40px;
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.floating-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.floating-btn:hover {
+  transform: scale(1.1);
+}
+
+.floating-btn.kakao {
+  background: #FEE500;
+  color: #3A1D1D;
+}
+
+.floating-btn.match {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+/* ─── Animate on Scroll ─── */
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 1024px) {
+  .hero-slogan { font-size: 48px; }
+  .section-title-sm { font-size: 32px; }
+  .stat-number { font-size: 64px; }
+}
+
+@media (max-width: 768px) {
+  .hero-slogan { font-size: 36px; }
+  .hero-title  { font-size: 24px; }
+  .hero-subtitle { font-size: 18px; }
+  .section-title-sm { font-size: 28px; }
+  .section-title-center { font-size: 28px; }
+  .stat-number { font-size: 48px; }
+  .floating-banner { right: 16px; bottom: 24px; }
 }
