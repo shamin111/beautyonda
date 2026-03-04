@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import type { News } from '@/types'
+import type { News, NewsCategory } from '@/types'
 import {
   createNotice, updateNotice, deleteNotice, togglePublish,
 } from './actions'
@@ -10,7 +10,7 @@ const CATEGORIES = ['공지사항', '이벤트', '오픈클래스', '협회소�
 
 type Mode = 'list' | 'view' | 'write' | 'edit'
 
-const EMPTY = { category: '공지사항', title: '', content: '', is_published: false }
+const EMPTY: { category: NewsCategory; title: string; content: string; is_published: boolean } = { category: '공지사항', title: '', content: '', is_published: false }
 
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('ko-KR', {
