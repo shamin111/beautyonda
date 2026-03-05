@@ -12,10 +12,36 @@ export async function getInstructors() {
   return data ?? []
 }
 
+export async function createInstructor(payload: {
+  name: string
+  phone: string
+  region: string
+  fields: string[]
+  career_years: number
+  price_min: number
+  lesson_method: string
+  bio: string
+  signature_style: string[]
+  instagram_url: string
+  youtube_url: string
+  profile_image: string
+  portfolio_images: string[]
+  is_approved: boolean
+  is_active: boolean
+}) {
+  const supabase = createAdminClient()
+  const { data, error } = await supabase.from('instructors').insert({ ...payload, match_count: 0, rating: 0 }).select().single()
+  if (!error) revalidatePath('/admin/instructors')
+  return { data, error }
+}
+
 export async function updateInstructor(id: string, updates: Record<string, unknown>) {
   const supabase = createAdminClient()
   const { error } = await supabase.from('instructors').update(updates).eq('id', id)
-  if (!error) revalidatePath('/admin/instructors')
+  if (!error) {
+    revalidatePath('/admin/instructors')
+    revalidatePath('/')
+  }
   return { error }
 }
 
