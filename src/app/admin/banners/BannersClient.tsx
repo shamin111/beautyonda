@@ -9,14 +9,14 @@ type Banner = {
   title: string
   subtitle: string
   image_url: string
-  link: string
+  link_url: string
   sort_order: number
   is_active: boolean
-  clicks: number
+  click_count: number
   created_at: string
 }
 
-type FormState = { title: string; subtitle: string; image_url: string; link: string }
+type FormState = { title: string; subtitle: string; image_url: string; link_url: string }
 
 async function uploadToStorage(file: File): Promise<string | null> {
   const supabase = createClient()
@@ -99,9 +99,9 @@ function ImageUploadField({
 export default function BannersClient({ initialData }: { initialData: Banner[] }) {
   const [data, setData] = useState<Banner[]>(initialData)
   const [showForm, setShowForm] = useState(false)
-  const [form, setForm] = useState<FormState>({ title: '', subtitle: '', image_url: '', link: '' })
+  const [form, setForm] = useState<FormState>({ title: '', subtitle: '', image_url: '', link_url: '' })
   const [editingId, setEditingId] = useState<string | null>(null)
-  const [editForm, setEditForm] = useState<FormState>({ title: '', subtitle: '', image_url: '', link: '' })
+  const [editForm, setEditForm] = useState<FormState>({ title: '', subtitle: '', image_url: '', link_url: '' })
   const [isPending, startTransition] = useTransition()
 
   const toggleActive = (banner: Banner) => {
@@ -122,7 +122,7 @@ export default function BannersClient({ initialData }: { initialData: Banner[] }
 
   const startEdit = (b: Banner) => {
     setEditingId(b.id)
-    setEditForm({ title: b.title, subtitle: b.subtitle, image_url: b.image_url ?? '', link: b.link ?? '' })
+    setEditForm({ title: b.title, subtitle: b.subtitle, image_url: b.image_url ?? '', link_url: b.link_url ?? '' })
     setShowForm(false)
   }
 
@@ -136,7 +136,7 @@ export default function BannersClient({ initialData }: { initialData: Banner[] }
         title: editForm.title,
         subtitle: editForm.subtitle,
         image_url: editForm.image_url,
-        link: editForm.link,
+        link_url: editForm.link_url,
       })
     })
   }
@@ -170,11 +170,11 @@ export default function BannersClient({ initialData }: { initialData: Banner[] }
         title: form.title,
         subtitle: form.subtitle,
         image_url: form.image_url,
-        link: form.link,
+        link_url: form.link_url,
         sort_order: data.length + 1,
       })
       if (!error) {
-        setForm({ title: '', subtitle: '', image_url: '', link: '' })
+        setForm({ title: '', subtitle: '', image_url: '', link_url: '' })
         setShowForm(false)
       }
     })
@@ -213,7 +213,7 @@ export default function BannersClient({ initialData }: { initialData: Banner[] }
               </div>
               <div style={{ flex: 1 }}>
                 <label style={{ display: 'block', fontSize: '13px', fontWeight: 600, marginBottom: '6px' }}>링크 URL</label>
-                <input style={{ ...inputStyle, padding: '10px 12px', fontSize: '14px' }} placeholder="/register" value={form.link} onChange={e => setForm(f => ({ ...f, link: e.target.value }))} />
+                <input style={{ ...inputStyle, padding: '10px 12px', fontSize: '14px' }} placeholder="/register" value={form.link_url} onChange={e => setForm(f => ({ ...f, link_url: e.target.value }))} />
               </div>
             </div>
             <div>
@@ -283,10 +283,10 @@ export default function BannersClient({ initialData }: { initialData: Banner[] }
               </div>
 
               {/* 링크 */}
-              <span style={{ fontSize: '13px', color: '#555', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.link || '-'}</span>
+              <span style={{ fontSize: '13px', color: '#555', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{b.link_url || '-'}</span>
 
               {/* 클릭수 */}
-              <span style={{ fontSize: '14px', fontWeight: 700, color: '#5b0000' }}>{(b.clicks ?? 0).toLocaleString()}</span>
+              <span style={{ fontSize: '14px', fontWeight: 700, color: '#5b0000' }}>{(b.click_count ?? 0).toLocaleString()}</span>
 
               {/* 등록일 */}
               <span style={{ fontSize: '12px', color: '#aaa' }}>{b.created_at ? new Date(b.created_at).toLocaleDateString('ko-KR') : '-'}</span>
@@ -329,7 +329,7 @@ export default function BannersClient({ initialData }: { initialData: Banner[] }
                     </div>
                     <div style={{ flex: 1 }}>
                       <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, marginBottom: '4px', color: '#555' }}>링크 URL</label>
-                      <input style={inputStyle} placeholder="/register" value={editForm.link} onChange={e => setEditForm(f => ({ ...f, link: e.target.value }))} />
+                      <input style={inputStyle} placeholder="/register" value={editForm.link_url} onChange={e => setEditForm(f => ({ ...f, link_url: e.target.value }))} />
                     </div>
                   </div>
                   <div>

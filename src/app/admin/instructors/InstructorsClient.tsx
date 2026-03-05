@@ -10,6 +10,8 @@ import {
 export type Instructor = {
   id: string
   name: string
+  role: string
+  company: string
   phone: string
   region: string
   fields: string[]
@@ -18,10 +20,12 @@ export type Instructor = {
   lesson_method: string
   bio: string
   signature_style: string[]
+  certifications: string[]
   instagram_url: string
   youtube_url: string
   profile_image: string
   portfolio_images: string[]
+  grade: string
   is_approved: boolean
   is_active: boolean
   rating: number
@@ -30,10 +34,11 @@ export type Instructor = {
 }
 
 type FormState = {
-  name: string; phone: string; region: string
+  name: string; role: string; company: string; phone: string; region: string
   fields: string[]; career_years: string; price_min: string
   lesson_method: string; bio: string; signature_style_input: string
-  signature_style: string[]; instagram_url: string; youtube_url: string
+  signature_style: string[]; certifications_input: string; certifications: string[]
+  instagram_url: string; youtube_url: string; grade: string
   profile_image: string; portfolio_images: string[]
 }
 
@@ -45,11 +50,19 @@ const METHODS = [
   { value: 'both', label: '대면+온라인' },
 ]
 
+const GRADES = [
+  { value: 'new', label: '🌱 NEW' },
+  { value: 'standard', label: '⭐ 일반' },
+  { value: 'pro', label: '⭐⭐ PRO' },
+  { value: 'top', label: '🏆 TOP' },
+]
+
 const EMPTY_FORM: FormState = {
-  name: '', phone: '', region: '서울',
+  name: '', role: '', company: '', phone: '', region: '서울',
   fields: [], career_years: '', price_min: '',
   lesson_method: 'offline', bio: '', signature_style_input: '',
-  signature_style: [], instagram_url: '', youtube_url: '',
+  signature_style: [], certifications_input: '', certifications: [],
+  instagram_url: '', youtube_url: '', grade: 'new',
   profile_image: '', portfolio_images: [],
 }
 
@@ -201,12 +214,15 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
     setEditMode(false)
     setShowForm(false)
     setForm({
-      name: row.name, phone: row.phone, region: row.region,
+      name: row.name, role: row.role ?? '', company: row.company ?? '',
+      phone: row.phone, region: row.region,
       fields: row.fields ?? [], career_years: String(row.career_years ?? ''),
       price_min: String(row.price_min ?? ''), lesson_method: row.lesson_method ?? 'offline',
       bio: row.bio ?? '', signature_style_input: '',
       signature_style: row.signature_style ?? [],
+      certifications_input: '', certifications: row.certifications ?? [],
       instagram_url: row.instagram_url ?? '', youtube_url: row.youtube_url ?? '',
+      grade: row.grade ?? 'new',
       profile_image: row.profile_image ?? '', portfolio_images: row.portfolio_images ?? [],
     })
   }
@@ -225,17 +241,27 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
 
   const removeTag = (i: number) => setForm(f => ({ ...f, signature_style: f.signature_style.filter((_, idx) => idx !== i) }))
 
+  const addCert = () => {
+    const val = form.certifications_input.trim(); if (!val) return
+    setForm(f => ({ ...f, certifications: [...f.certifications, val], certifications_input: '' }))
+  }
+
+  const removeCert = (i: number) => setForm(f => ({ ...f, certifications: f.certifications.filter((_, idx) => idx !== i) }))
+
   const handleAdd = () => {
     if (!form.name || !form.phone) return alert('이름과 연락처는 필수입니다.')
     startTransition(async () => {
       const { data: created, error } = await createInstructor({
-        name: form.name, phone: form.phone, region: form.region,
+        name: form.name, role: form.role, company: form.company,
+        phone: form.phone, region: form.region,
         fields: form.fields, career_years: Number(form.career_years) || 0,
         price_min: Number(form.price_min) || 0,
         lesson_method: form.lesson_method, bio: form.bio,
         signature_style: form.signature_style,
+        certifications: form.certifications,
         instagram_url: form.instagram_url, youtube_url: form.youtube_url,
         profile_image: form.profile_image, portfolio_images: form.portfolio_images,
+        grade: form.grade,
         is_approved: true, is_active: true,
       })
       if (created) {
@@ -249,13 +275,16 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
   const handleSaveEdit = () => {
     if (!selected) return
     const updates = {
-      name: form.name, phone: form.phone, region: form.region,
+      name: form.name, role: form.role, company: form.company,
+      phone: form.phone, region: form.region,
       fields: form.fields, career_years: Number(form.career_years) || 0,
       price_min: Number(form.price_min) || 0,
       lesson_method: form.lesson_method, bio: form.bio,
       signature_style: form.signature_style,
+      certifications: form.certifications,
       instagram_url: form.instagram_url, youtube_url: form.youtube_url,
       profile_image: form.profile_image, portfolio_images: form.portfolio_images,
+      grade: form.grade,
     }
     const updated = { ...selected, ...updates }
     setData(prev => prev.map(d => d.id === selected.id ? updated : d))
@@ -310,10 +339,18 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
               <div><label style={labelS}>이름 *</label><input style={inputS} placeholder="홍길동" value={form.name} onChange={e => sf('name', e.target.value)} /></div>
               <div><label style={labelS}>연락처 *</label><input style={inputS} placeholder="010-0000-0000" value={form.phone} onChange={e => sf('phone', e.target.value)} /></div>
+              <div><label style={labelS}>직책/역할</label><input style={inputS} placeholder="예) 헤어 아티스트, 원장" value={form.role} onChange={e => sf('role', e.target.value)} /></div>
+              <div><label style={labelS}>소속 기관</label><input style={inputS} placeholder="예) 뷰티아카데미, 프리랜서" value={form.company} onChange={e => sf('company', e.target.value)} /></div>
               <div>
                 <label style={labelS}>지역</label>
                 <select style={inputS} value={form.region} onChange={e => sf('region', e.target.value)}>
                   {REGIONS.map(r => <option key={r}>{r}</option>)}
+                </select>
+              </div>
+              <div>
+                <label style={labelS}>등급</label>
+                <select style={inputS} value={form.grade} onChange={e => sf('grade', e.target.value)}>
+                  {GRADES.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
                 </select>
               </div>
               <div>
@@ -350,6 +387,10 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
             <div style={{ marginBottom: '12px' }}>
               <label style={labelS}>강의 과목</label>
               <TagInput tags={form.signature_style} onAdd={addTag} onRemove={removeTag} inputVal={form.signature_style_input} onInputChange={v => sf('signature_style_input', v)} />
+            </div>
+            <div style={{ marginBottom: '12px' }}>
+              <label style={labelS}>자격증 · 경력</label>
+              <TagInput tags={form.certifications} onAdd={addCert} onRemove={removeCert} inputVal={form.certifications_input} onInputChange={v => sf('certifications_input', v)} />
             </div>
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
               <div><label style={labelS}>인스타그램 URL</label><input style={inputS} placeholder="https://instagram.com/..." value={form.instagram_url} onChange={e => sf('instagram_url', e.target.value)} /></div>
@@ -457,10 +498,18 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div><label style={labelS}>이름 *</label><input style={inputS} value={form.name} onChange={e => sf('name', e.target.value)} /></div>
                   <div><label style={labelS}>연락처</label><input style={inputS} value={form.phone} onChange={e => sf('phone', e.target.value)} /></div>
+                  <div><label style={labelS}>직책/역할</label><input style={inputS} placeholder="헤어 아티스트, 원장" value={form.role} onChange={e => sf('role', e.target.value)} /></div>
+                  <div><label style={labelS}>소속 기관</label><input style={inputS} placeholder="뷰티아카데미, 프리랜서" value={form.company} onChange={e => sf('company', e.target.value)} /></div>
                   <div>
                     <label style={labelS}>지역</label>
                     <select style={inputS} value={form.region} onChange={e => sf('region', e.target.value)}>
                       {REGIONS.map(r => <option key={r}>{r}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label style={labelS}>등급</label>
+                    <select style={inputS} value={form.grade} onChange={e => sf('grade', e.target.value)}>
+                      {GRADES.map(g => <option key={g.value} value={g.value}>{g.label}</option>)}
                     </select>
                   </div>
                   <div>
@@ -496,6 +545,10 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
                 <div>
                   <label style={labelS}>강의 과목</label>
                   <TagInput tags={form.signature_style} onAdd={addTag} onRemove={removeTag} inputVal={form.signature_style_input} onInputChange={v => sf('signature_style_input', v)} />
+                </div>
+                <div>
+                  <label style={labelS}>자격증 · 경력</label>
+                  <TagInput tags={form.certifications} onAdd={addCert} onRemove={removeCert} inputVal={form.certifications_input} onInputChange={v => sf('certifications_input', v)} />
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div><label style={labelS}>인스타그램 URL</label><input style={inputS} placeholder="https://..." value={form.instagram_url} onChange={e => sf('instagram_url', e.target.value)} /></div>

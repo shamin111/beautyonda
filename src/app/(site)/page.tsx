@@ -27,7 +27,7 @@ export default async function HomePage() {
       .limit(3),
     supabase
       .from('banners')
-      .select('title, subtitle, image_url, link')
+      .select('title, subtitle, image_url, link_url')
       .eq('is_active', true)
       .order('sort_order', { ascending: true }),
   ])

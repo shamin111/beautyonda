@@ -14,6 +14,8 @@ export async function getInstructors() {
 
 export async function createInstructor(payload: {
   name: string
+  role: string
+  company: string
   phone: string
   region: string
   fields: string[]
@@ -22,15 +24,17 @@ export async function createInstructor(payload: {
   lesson_method: string
   bio: string
   signature_style: string[]
+  certifications: string[]
   instagram_url: string
   youtube_url: string
   profile_image: string
   portfolio_images: string[]
+  grade: string
   is_approved: boolean
   is_active: boolean
 }) {
   const supabase = createAdminClient()
-  const { data, error } = await supabase.from('instructors').insert({ ...payload, match_count: 0, rating: 0 }).select().single()
+  const { data, error } = await supabase.from('instructors').insert({ ...payload, match_count: 0, rating: 0, review_count: 0 }).select().single()
   if (!error) revalidatePath('/admin/instructors')
   return { data, error }
 }

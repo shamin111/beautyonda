@@ -28,7 +28,7 @@ type BannerSlide = {
   title: string
   subtitle: string
   image_url?: string | null
-  link?: string | null
+  link_url?: string | null
 }
 
 export default function HeroSection({ slides }: { slides?: BannerSlide[] }) {

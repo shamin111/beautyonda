@@ -14,7 +14,7 @@ export async function getContacts() {
 
 export async function markAsRead(id: string) {
   const supabase = createAdminClient()
-  const { error } = await supabase.from('contacts').update({ status: 'read' }).eq('id', id)
+  const { error } = await supabase.from('contacts').update({ is_read: true }).eq('id', id)
   if (!error) revalidatePath('/admin/contacts')
   return { error }
 }

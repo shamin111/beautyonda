@@ -13,10 +13,10 @@ export async function getBanners() {
 }
 
 export async function createBanner(payload: {
-  title: string; subtitle: string; image_url: string; link: string; sort_order: number
+  title: string; subtitle: string; image_url: string; link_url: string; sort_order: number
 }) {
   const supabase = createAdminClient()
-  const { error } = await supabase.from('banners').insert({ ...payload, is_active: false, clicks: 0 })
+  const { error } = await supabase.from('banners').insert({ ...payload, is_active: false, click_count: 0 })
   if (!error) revalidatePath('/admin/banners')
   return { error }
 }

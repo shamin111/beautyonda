@@ -5,7 +5,7 @@ import { markAsRead, deleteContact } from './actions'
 
 type Contact = {
   id: string; name: string; phone: string; type: string
-  message: string; status: string; created_at: string
+  message: string; is_read: boolean; created_at: string
 }
 
 function formatDate(d: string) {
@@ -19,8 +19,8 @@ export default function ContactsClient({ initialData }: { initialData: Contact[]
 
   const handleSelect = (row: Contact) => {
     setSelected(row)
-    if (row.status === 'unread') {
-      setData(prev => prev.map(d => d.id === row.id ? { ...d, status: 'read' } : d))
+    if (!row.is_read) {
+      setData(prev => prev.map(d => d.id === row.id ? { ...d, is_read: true } : d))
       startTransition(() => { void markAsRead(row.id) })
     }
   }
@@ -50,11 +50,11 @@ export default function ContactsClient({ initialData }: { initialData: Contact[]
                 borderBottom: '1px solid #f5f5f5',
                 cursor: 'pointer',
                 backgroundColor: selected?.id === row.id ? '#fff9f5' : '#fff',
-                borderLeft: row.status === 'unread' ? '3px solid #5b0000' : '3px solid transparent',
+                borderLeft: !row.is_read ? '3px solid #5b0000' : '3px solid transparent',
               }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
                 <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                  {row.status === 'unread' && <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#5b0000', display: 'inline-block' }} />}
+                  {!row.is_read && <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#5b0000', display: 'inline-block' }} />}
                   <span style={{ fontWeight: 700, fontSize: '15px' }}>{row.name}</span>
                   <span style={{ fontSize: '12px', padding: '2px 8px', backgroundColor: '#f5f5f5', color: '#555' }}>{row.type}</span>
                 </div>
