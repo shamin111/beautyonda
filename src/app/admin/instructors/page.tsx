@@ -9,7 +9,6 @@ export default async function AdminInstructorsPage() {
     name: String(r.name ?? ''),
     role: String(r.role ?? ''),
     company: String(r.company ?? ''),
-    phone: String(r.phone ?? ''),
     region: String(r.region ?? ''),
     fields: Array.isArray(r.fields) ? r.fields as string[] : [],
     career_years: Number(r.career_years ?? 0),

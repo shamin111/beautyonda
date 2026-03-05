@@ -12,7 +12,6 @@ export type Instructor = {
   name: string
   role: string
   company: string
-  phone: string
   region: string
   fields: string[]
   career_years: number
@@ -34,7 +33,7 @@ export type Instructor = {
 }
 
 type FormState = {
-  name: string; role: string; company: string; phone: string; region: string
+  name: string; role: string; company: string; region: string
   fields: string[]; career_years: string; price_min: string
   lesson_method: string; bio: string; signature_style_input: string
   signature_style: string[]; certifications_input: string; certifications: string[]
@@ -58,7 +57,7 @@ const GRADES = [
 ]
 
 const EMPTY_FORM: FormState = {
-  name: '', role: '', company: '', phone: '', region: '서울',
+  name: '', role: '', company: '', region: '서울',
   fields: [], career_years: '', price_min: '',
   lesson_method: 'offline', bio: '', signature_style_input: '',
   signature_style: [], certifications_input: '', certifications: [],
@@ -215,7 +214,7 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
     setShowForm(false)
     setForm({
       name: row.name, role: row.role ?? '', company: row.company ?? '',
-      phone: row.phone, region: row.region,
+      region: row.region,
       fields: row.fields ?? [], career_years: String(row.career_years ?? ''),
       price_min: String(row.price_min ?? ''), lesson_method: row.lesson_method ?? 'offline',
       bio: row.bio ?? '', signature_style_input: '',
@@ -249,11 +248,11 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
   const removeCert = (i: number) => setForm(f => ({ ...f, certifications: f.certifications.filter((_, idx) => idx !== i) }))
 
   const handleAdd = () => {
-    if (!form.name || !form.phone) return alert('이름과 연락처는 필수입니다.')
+    if (!form.name) return alert('이름은 필수입니다.')
     startTransition(async () => {
       const { data: created, error } = await createInstructor({
         name: form.name, role: form.role, company: form.company,
-        phone: form.phone, region: form.region,
+        region: form.region,
         fields: form.fields, career_years: Number(form.career_years) || 0,
         price_min: Number(form.price_min) || 0,
         lesson_method: form.lesson_method, bio: form.bio,
@@ -276,7 +275,7 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
     if (!selected) return
     const updates = {
       name: form.name, role: form.role, company: form.company,
-      phone: form.phone, region: form.region,
+      region: form.region,
       fields: form.fields, career_years: Number(form.career_years) || 0,
       price_min: Number(form.price_min) || 0,
       lesson_method: form.lesson_method, bio: form.bio,
@@ -341,7 +340,6 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
             <ProfileImageUpload value={form.profile_image} onChange={url => sf('profile_image', url)} />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
               <div><label style={labelS}>이름 *</label><input style={inputS} placeholder="홍길동" value={form.name} onChange={e => sf('name', e.target.value)} /></div>
-              <div><label style={labelS}>연락처 *</label><input style={inputS} placeholder="010-0000-0000" value={form.phone} onChange={e => sf('phone', e.target.value)} /></div>
               <div><label style={labelS}>직책/역할</label><input style={inputS} placeholder="예) 헤어 아티스트, 원장" value={form.role} onChange={e => sf('role', e.target.value)} /></div>
               <div><label style={labelS}>소속 기관</label><input style={inputS} placeholder="예) 뷰티아카데미, 프리랜서" value={form.company} onChange={e => sf('company', e.target.value)} /></div>
               <div>
@@ -500,7 +498,6 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
                 <ProfileImageUpload value={form.profile_image} onChange={url => sf('profile_image', url)} />
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
                   <div><label style={labelS}>이름 *</label><input style={inputS} value={form.name} onChange={e => sf('name', e.target.value)} /></div>
-                  <div><label style={labelS}>연락처</label><input style={inputS} value={form.phone} onChange={e => sf('phone', e.target.value)} /></div>
                   <div><label style={labelS}>직책/역할</label><input style={inputS} placeholder="헤어 아티스트, 원장" value={form.role} onChange={e => sf('role', e.target.value)} /></div>
                   <div><label style={labelS}>소속 기관</label><input style={inputS} placeholder="뷰티아카데미, 프리랜서" value={form.company} onChange={e => sf('company', e.target.value)} /></div>
                   <div>
@@ -586,7 +583,6 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
                 {/* 기본 정보 */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '13px', marginBottom: '16px', backgroundColor: '#fafafa', padding: '16px', border: '1px solid #f0f0f0' }}>
                   {[
-                    ['연락처', selected.phone || '-'],
                     ['경력', selected.career_years ? `${selected.career_years}년` : '-'],
                     ['시작 금액', selected.price_min ? `${Number(selected.price_min).toLocaleString()}원~` : '-'],
                     ['수업 방식', METHODS.find(m => m.value === selected.lesson_method)?.label ?? selected.lesson_method ?? '-'],
@@ -665,14 +661,10 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
                   {selected.is_active ? '✓ 사이트 노출 중 (클릭하여 숨김)' : '○ 사이트 숨김 (클릭하여 노출)'}
                 </button>
 
-                {/* 연락 / 삭제 */}
+                {/* 삭제 */}
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <a href={`tel:${selected.phone}`}
-                    style={{ flex: 1, display: 'block', textAlign: 'center', padding: '10px', border: '1px solid #5b0000', color: '#5b0000', fontSize: '13px', fontWeight: 700, textDecoration: 'none' }}>
-                    📞 전화하기
-                  </a>
                   <button onClick={() => handleDelete(selected.id)}
-                    style={{ padding: '10px 14px', fontSize: '13px', border: '1px solid #ffcccc', backgroundColor: '#fff8f8', cursor: 'pointer', color: '#c00', fontWeight: 700 }}>
+                    style={{ flex: 1, padding: '10px 14px', fontSize: '13px', border: '1px solid #ffcccc', backgroundColor: '#fff8f8', cursor: 'pointer', color: '#c00', fontWeight: 700 }}>
                     삭제
                   </button>
                 </div>

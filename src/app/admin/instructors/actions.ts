@@ -16,7 +16,6 @@ export async function createInstructor(payload: {
   name: string
   role: string
   company: string
-  phone: string
   region: string
   fields: string[]
   career_years: number
