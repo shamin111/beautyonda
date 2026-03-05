@@ -25,12 +25,12 @@ export default function MatchesClient({ initialData }: { initialData: MatchReq[]
 
   const handleUpdateStatus = (id: string, status: string) => {
     setData(prev => prev.map(d => d.id === id ? { ...d, status } : d))
-    startTransition(() => updateMatchStatus(id, status))
+    startTransition(() => { void updateMatchStatus(id, status) })
   }
 
   const handleDelete = (id: string) => {
     setData(prev => prev.filter(d => d.id !== id))
-    startTransition(() => deleteMatchRequest(id))
+    startTransition(() => { void deleteMatchRequest(id) })
   }
 
   return (

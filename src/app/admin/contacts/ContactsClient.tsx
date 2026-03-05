@@ -21,14 +21,14 @@ export default function ContactsClient({ initialData }: { initialData: Contact[]
     setSelected(row)
     if (row.status === 'unread') {
       setData(prev => prev.map(d => d.id === row.id ? { ...d, status: 'read' } : d))
-      startTransition(() => markAsRead(row.id))
+      startTransition(() => { void markAsRead(row.id) })
     }
   }
 
   const handleDelete = (id: string) => {
     setData(prev => prev.filter(d => d.id !== id))
     if (selected?.id === id) setSelected(null)
-    startTransition(() => deleteContact(id))
+    startTransition(() => { void deleteContact(id) })
   }
 
   return (
