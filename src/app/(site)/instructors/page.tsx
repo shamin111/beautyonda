@@ -3,6 +3,9 @@ import InstructorListClient from './InstructorListClient'
 import { createClient } from '@/lib/supabase/server'
 import type { Instructor } from '@/types'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   title: '강사 찾기',
   description: '뷰티온다에 등록된 검증된 강사를 분야, 지역, 가격대별로 찾아보세요.',

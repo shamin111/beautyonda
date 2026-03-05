@@ -4,6 +4,9 @@ import InstructorDetailClient from './InstructorDetailClient'
 import { createClient } from '@/lib/supabase/server'
 import type { Instructor, Review } from '@/types'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
   const supabase = await createClient()

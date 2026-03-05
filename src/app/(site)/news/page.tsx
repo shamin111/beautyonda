@@ -3,6 +3,9 @@ import NewsListClient from './NewsListClient'
 import { createClient } from '@/lib/supabase/server'
 import type { News } from '@/types'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export const metadata = {
   title: '뉴스·이벤트',
   description: '뷰티온다의 최신 소식과 오픈클래스·특강 일정을 확인하세요.',
