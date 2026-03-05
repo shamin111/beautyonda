@@ -235,7 +235,7 @@ export default function InstructorListClient({ instructors }: Props) {
                     <div className="instructor-card" style={{ backgroundColor: '#fff', transition: 'box-shadow 0.2s' }}
                       onMouseEnter={e => (e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)')}
                       onMouseLeave={e => (e.currentTarget.style.boxShadow = 'none')}>
-                      <div className="instructor-img" style={{ position: 'relative', backgroundImage: instructor.profile_image ? `url(${instructor.profile_image})` : undefined, backgroundColor: '#e8d5d5' }}>
+                      <div className="instructor-img" style={{ position: 'relative', backgroundImage: instructor.profile_image ? `url(${instructor.profile_image})` : undefined, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: '#e8d5d5' }}>
                         <span style={{ position: 'absolute', top: '10px', left: '10px', backgroundColor: instructor.grade === 'top' ? '#5b0000' : '#333', color: '#fff', fontSize: '11px', fontWeight: 700, padding: '2px 8px' }}>
                           {GRADE_LABEL[instructor.grade] ?? instructor.grade}
                         </span>

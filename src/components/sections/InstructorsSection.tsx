@@ -72,7 +72,13 @@ export default function InstructorsSection({ initialData }: { initialData: Instr
                 {/* 이미지 */}
                 <div
                   className="instructor-img"
-                  style={{ backgroundColor: '#e8d5d5', position: 'relative' }}
+                  style={{
+                    backgroundColor: '#e8d5d5',
+                    backgroundImage: instructor.profile_image ? `url(${instructor.profile_image})` : undefined,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    position: 'relative',
+                  }}
                 >
                   {/* 등급 배지 */}
                   <span
