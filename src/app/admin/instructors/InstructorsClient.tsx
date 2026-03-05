@@ -290,7 +290,10 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
     setData(prev => prev.map(d => d.id === selected.id ? updated : d))
     setSelected(updated)
     setEditMode(false)
-    startTransition(async () => { await updateInstructor(selected.id, updates) })
+    startTransition(async () => {
+      const { error } = await updateInstructor(selected.id, updates)
+      if (error) alert('저장 실패: ' + error.message)
+    })
   }
 
   const handleApprove = (id: string, current: boolean) => {

@@ -42,7 +42,9 @@ export async function createInstructor(payload: {
 export async function updateInstructor(id: string, updates: Record<string, unknown>) {
   const supabase = createAdminClient()
   const { error } = await supabase.from('instructors').update(updates).eq('id', id)
-  if (!error) {
+  if (error) {
+    console.error('[updateInstructor] error:', error)
+  } else {
     revalidatePath('/admin/instructors')
     revalidatePath('/')
   }
