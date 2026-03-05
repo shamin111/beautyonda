@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 const STEPS = ['기본 정보', '레슨 조건', '상세 요청', '완료']
 
@@ -80,11 +81,24 @@ export default function MatchRequestClient() {
 
   const handleSubmit = async () => {
     setLoading(true)
-    // TODO: Supabase insert
-    await new Promise(r => setTimeout(r, 1200))
+    const supabase = createClient()
+    const { error } = await supabase.from('match_requests').insert({
+      category: form.fields[0] ?? '기타',
+      title: `${form.fields.join('·')} ${form.level === 'beginner' ? '입문' : form.level === 'elementary' ? '초급' : form.level === 'intermediate' ? '중급' : '고급'} 강사 섭외`,
+      location_si: form.region,
+      lecture_type: form.method === 'online' ? '온라인강의' : '출강강의',
+      description: form.message || `${form.fields.join(', ')} 분야 강사를 찾고 있습니다.`,
+      budget: form.price,
+      contact_name: form.name,
+      contact_phone: form.phone,
+      is_published: true,
+      status: 'pending',
+    })
     setLoading(false)
-    setSubmitted(true)
-    setStep(3)
+    if (!error) {
+      setSubmitted(true)
+      setStep(3)
+    }
   }
 
   const ChipBtn = ({ label, active, onClick }: { label: string; active: boolean; onClick: () => void }) => (

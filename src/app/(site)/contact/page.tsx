@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Header from '@/components/layout/Header'
 import { MessageCircle, Phone, Mail, MapPin, CheckCircle } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client'
 
 const INQUIRY_TYPES = [
   { value: 'match', label: '강사 매칭 문의' },
@@ -24,8 +25,14 @@ export default function ContactPage() {
     e.preventDefault()
     if (!agreed) { alert('개인정보 수집에 동의해주세요.'); return }
     setLoading(true)
-    // TODO: Supabase contacts 테이블에 insert
-    await new Promise(r => setTimeout(r, 1000))
+    const supabase = createClient()
+    await supabase.from('contacts').insert({
+      name: form.name,
+      phone: form.phone,
+      type: form.type,
+      message: form.message,
+      status: 'unread',
+    })
     setLoading(false)
     setSent(true)
   }

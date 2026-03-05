@@ -62,10 +62,11 @@ export interface MatchRequest {
 export interface Review {
   id: string
   instructor_id: string
-  match_request_id: string
+  match_request_id?: string
   author_name: string
   rating: number         // 1~5
   content: string
+  is_visible?: boolean
   created_at: string
 }
 

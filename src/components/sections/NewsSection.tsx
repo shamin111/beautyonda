@@ -1,10 +1,17 @@
 import Link from 'next/link'
 
-const MOCK_NEWS = [
-  { id: '1', category: '공지사항', title: '뷰티온다 서비스 정식 런칭 안내', date: '2025.03.01', summary: '뷰티온다가 드디어 정식 서비스를 시작합니다.' },
-  { id: '2', category: '오픈클래스', title: '3월 헤어 업스타일 오픈클래스 모집', date: '2025.02.25', summary: '현업 아티스트와 함께하는 업스타일 특강에 참여하세요.' },
-  { id: '3', category: '이벤트', title: '강사 등록 선착순 혜택 안내', date: '2025.02.20', summary: '선착순 50명 강사에게 프리미엄 노출 혜택을 제공합니다.' },
-]
+type NewsItem = {
+  id: string
+  category: string
+  title: string
+  content: string
+  created_at: string
+}
+
+function formatDate(dateStr: string) {
+  return new Date(dateStr).toLocaleDateString('ko-KR', { year: 'numeric', month: '2-digit', day: '2-digit' })
+    .replace(/\. /g, '.').replace(/\.$/, '')
+}
 
 const CATEGORY_COLOR: Record<string, string> = {
   '공지사항': '#5b0000',
@@ -14,7 +21,7 @@ const CATEGORY_COLOR: Record<string, string> = {
   '컨테스트': '#3b005b',
 }
 
-export default function NewsSection() {
+export default function NewsSection({ news }: { news: NewsItem[] }) {
   return (
     <section style={{ backgroundColor: 'var(--color-bg-light)', padding: '100px 0' }}>
       <div className="container">
@@ -42,21 +49,20 @@ export default function NewsSection() {
 
           {/* Right — Cards */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            {MOCK_NEWS.map(news => (
+            {news.map(item => (
               <Link
-                key={news.id}
-                href={`/news/${news.id}`}
+                key={item.id}
+                href={`/news/${item.id}`}
                 style={{ display: 'block' }}
               >
                 <div
                   className="news-card"
                   style={{ display: 'flex', gap: '20px', alignItems: 'flex-start', padding: '24px' }}
                 >
-                  {/* 카테고리 배지 */}
                   <span
                     style={{
                       flexShrink: 0,
-                      backgroundColor: CATEGORY_COLOR[news.category] ?? '#333',
+                      backgroundColor: CATEGORY_COLOR[item.category] ?? '#333',
                       color: '#fff',
                       fontSize: '12px',
                       fontWeight: 700,
@@ -64,15 +70,17 @@ export default function NewsSection() {
                       marginTop: '3px',
                     }}
                   >
-                    {news.category}
+                    {item.category}
                   </span>
                   <div style={{ flex: 1 }}>
                     <h4 style={{ fontSize: '18px', fontWeight: 700, color: '#141414', marginBottom: '8px' }}>
-                      {news.title}
+                      {item.title}
                     </h4>
-                    <p style={{ fontSize: '14px', color: '#666', lineHeight: 1.5 }}>{news.summary}</p>
+                    <p style={{ fontSize: '14px', color: '#666', lineHeight: 1.5 }}>
+                      {item.content.replace(/\n/g, ' ').slice(0, 80)}...
+                    </p>
                   </div>
-                  <span style={{ flexShrink: 0, fontSize: '13px', color: '#aaa' }}>{news.date}</span>
+                  <span style={{ flexShrink: 0, fontSize: '13px', color: '#aaa' }}>{formatDate(item.created_at)}</span>
                 </div>
               </Link>
             ))}

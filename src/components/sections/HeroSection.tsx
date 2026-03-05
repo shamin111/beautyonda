@@ -3,29 +3,41 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-const SLIDES = [
+const DEFAULT_SLIDES = [
   {
-    slogan: 'Beauty ONDA',
     title: '고수가 중수를,\n중수가 하수를 끌어올린다',
     subtitle: '현업 경력자가 다음 단계를 이끄는 뷰티 클래스',
+    image_url: '',
+    link: '',
   },
   {
-    slogan: 'Beauty ONDA',
     title: '뷰티의 모든 분야\n선생님 찾기는 뷰티온다!',
     subtitle: '헤어부터 메이크업, 네일, 스킨케어까지 전문 강사를 만나보세요',
+    image_url: '',
+    link: '',
   },
   {
-    slogan: 'Beauty ONDA',
     title: '실전·중급·고급이\n자연스럽게 이어지는 교육',
     subtitle: '단계별 실력 향상 — 교육·레슨·취업까지 이어지는 매칭 플랫폼',
+    image_url: '',
+    link: '',
   },
 ]
 
-export default function HeroSection() {
+type BannerSlide = {
+  title: string
+  subtitle: string
+  image_url?: string | null
+  link?: string | null
+}
+
+export default function HeroSection({ slides }: { slides?: BannerSlide[] }) {
+  const SLIDES = (slides && slides.length > 0) ? slides : DEFAULT_SLIDES
   const [current, setCurrent] = useState(0)
   const [fade, setFade] = useState(true)
 
   useEffect(() => {
+    if (SLIDES.length <= 1) return
     const timer = setInterval(() => {
       setFade(false)
       setTimeout(() => {
@@ -34,7 +46,7 @@ export default function HeroSection() {
       }, 400)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [SLIDES.length])
 
   const slide = SLIDES[current]
 
@@ -51,16 +63,29 @@ export default function HeroSection() {
         backgroundColor: '#1a0a0a',
       }}
     >
-      {/* 배경 — 실제 이미지 업로드 전 그라디언트 */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(135deg, #2d0000 0%, #5b0000 40%, #1a0a0a 100%)',
-          zIndex: 0,
-        }}
-      />
-      {/* 오버레이 텍스처 */}
+      {/* 배경 이미지 또는 그라디언트 */}
+      {slide.image_url ? (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            backgroundImage: `url(${slide.image_url})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            zIndex: 0,
+          }}
+        />
+      ) : (
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(135deg, #2d0000 0%, #5b0000 40%, #1a0a0a 100%)',
+            zIndex: 0,
+          }}
+        />
+      )}
+      {/* 오버레이 */}
       <div
         style={{
           position: 'absolute',
@@ -96,7 +121,7 @@ export default function HeroSection() {
             textTransform: 'uppercase',
           }}
         >
-          {slide.slogan}
+          Beauty ONDA
         </p>
 
         {/* Slide Content */}
@@ -128,24 +153,26 @@ export default function HeroSection() {
         </div>
 
         {/* Slide Dots */}
-        <div style={{ display: 'flex', gap: '8px', marginTop: '60px' }}>
-          {SLIDES.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              style={{
-                width: i === current ? '32px' : '8px',
-                height: '8px',
-                borderRadius: '4px',
-                backgroundColor: i === current ? '#fff' : 'rgba(255,255,255,0.4)',
-                border: 'none',
-                cursor: 'pointer',
-                transition: 'all 0.3s',
-                padding: 0,
-              }}
-            />
-          ))}
-        </div>
+        {SLIDES.length > 1 && (
+          <div style={{ display: 'flex', gap: '8px', marginTop: '60px' }}>
+            {SLIDES.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrent(i)}
+                style={{
+                  width: i === current ? '32px' : '8px',
+                  height: '8px',
+                  borderRadius: '4px',
+                  backgroundColor: i === current ? '#fff' : 'rgba(255,255,255,0.4)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s',
+                  padding: 0,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </section>
   )

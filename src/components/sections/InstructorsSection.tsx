@@ -6,15 +6,18 @@ import { Star } from 'lucide-react'
 
 const FIELDS = ['전체', '헤어', '메이크업', '네일', '피부관리', '웨딩', '퍼스널컬러']
 
-// 임시 목업 데이터 (Supabase 연결 전)
-const MOCK_INSTRUCTORS = [
-  { id: '1', name: '이지연', role: '대표', company: '아이엠밸리', field: '헤어', region: '서울 강남', rating: 4.9, match_count: 47, grade: 'top' },
-  { id: '2', name: '박소연', role: '아티스트', company: '스타일리스트', field: '메이크업', region: '서울 서초', rating: 4.8, match_count: 32, grade: 'pro' },
-  { id: '3', name: '김민지', role: '강사', company: '뷰티아카데미', field: '네일', region: '서울 마포', rating: 4.7, match_count: 21, grade: 'pro' },
-  { id: '4', name: '최현아', role: '원장', company: '뷰티스튜디오', field: '피부관리', region: '경기 성남', rating: 5.0, match_count: 58, grade: 'top' },
-  { id: '5', name: '정수빈', role: '아티스트', company: '프리랜서', field: '웨딩', region: '서울 강동', rating: 4.9, match_count: 15, grade: 'standard' },
-  { id: '6', name: '한지수', role: '컨설턴트', company: '컬러스튜디오', field: '퍼스널컬러', region: '서울 용산', rating: 4.8, match_count: 29, grade: 'pro' },
-]
+type InstructorItem = {
+  id: string
+  name: string
+  role: string
+  company: string
+  fields: string[]
+  region: string
+  rating: number
+  match_count: number
+  grade: string
+  profile_image?: string
+}
 
 const GRADE_LABEL: Record<string, string> = {
   new: '🌱 NEW',
@@ -23,12 +26,12 @@ const GRADE_LABEL: Record<string, string> = {
   top: '🏆 TOP',
 }
 
-export default function InstructorsSection() {
+export default function InstructorsSection({ initialData }: { initialData: InstructorItem[] }) {
   const [activeField, setActiveField] = useState('전체')
 
   const filtered = activeField === '전체'
-    ? MOCK_INSTRUCTORS
-    : MOCK_INSTRUCTORS.filter(i => i.field === activeField)
+    ? initialData
+    : initialData.filter(i => i.fields?.includes(activeField))
 
   return (
     <section id="instructors" style={{ padding: '100px 0', backgroundColor: '#fff' }}>
