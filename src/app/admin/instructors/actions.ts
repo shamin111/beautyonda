@@ -58,6 +58,10 @@ export async function toggleActive(id: string, current: boolean) {
   return updateInstructor(id, { is_active: !current })
 }
 
+export async function toggleFeatured(id: string, current: boolean) {
+  return updateInstructor(id, { is_featured: !current })
+}
+
 export async function deleteInstructor(id: string) {
   const supabase = createAdminClient()
   const { error } = await supabase.from('instructors').delete().eq('id', id)

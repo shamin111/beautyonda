@@ -4,7 +4,7 @@ import { useState, useTransition, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import {
   createInstructor, updateInstructor,
-  toggleApprove, toggleActive, deleteInstructor,
+  toggleApprove, toggleActive, toggleFeatured, deleteInstructor,
 } from './actions'
 
 export type Instructor = {
@@ -27,6 +27,7 @@ export type Instructor = {
   grade: string
   is_approved: boolean
   is_active: boolean
+  is_featured: boolean
   rating: number
   match_count: number
   created_at: string
@@ -659,6 +660,18 @@ export default function InstructorsClient({ initialData }: { initialData: Instru
                 <button onClick={() => handleActive(selected.id, selected.is_active)} disabled={isPending}
                   style={{ width: '100%', padding: '10px', fontSize: '13px', border: '1px solid #eee', background: selected.is_active ? '#f0fdf4' : '#fafafa', cursor: 'pointer', color: selected.is_active ? '#166534' : '#888', marginBottom: '8px', fontWeight: 700 }}>
                   {selected.is_active ? '✓ 사이트 노출 중 (클릭하여 숨김)' : '○ 사이트 숨김 (클릭하여 노출)'}
+                </button>
+
+                {/* 메인 추천 토글 */}
+                <button
+                  onClick={() => {
+                    setData(prev => prev.map(d => d.id === selected.id ? { ...d, is_featured: !selected.is_featured } : d))
+                    setSelected(prev => prev ? { ...prev, is_featured: !prev.is_featured } : null)
+                    startTransition(async () => { await toggleFeatured(selected.id, selected.is_featured) })
+                  }}
+                  disabled={isPending}
+                  style={{ width: '100%', padding: '10px', fontSize: '13px', border: '1px solid #eee', background: selected.is_featured ? '#fef9e7' : '#fafafa', cursor: 'pointer', color: selected.is_featured ? '#b45309' : '#888', marginBottom: '8px', fontWeight: 700 }}>
+                  {selected.is_featured ? '⭐ 메인 추천 중 (클릭하여 해제)' : '☆ 메인 추천 해제 (클릭하여 추천)'}
                 </button>
 
                 {/* 삭제 */}

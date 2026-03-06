@@ -20,6 +20,7 @@ export default async function HomePage() {
       .select('id, name, role, company, fields, region, rating, match_count, grade, profile_image')
       .eq('is_active', true)
       .eq('is_approved', true)
+      .eq('is_featured', true)
       .order('match_count', { ascending: false })
       .limit(6),
     supabase
