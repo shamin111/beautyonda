@@ -78,7 +78,7 @@ export default function MatchListClient({ items }: { items: MatchRequest[] }) {
 
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
         {/* 카테고리 탭 */}
-        <div style={{ display: 'flex', gap: '0', borderBottom: '2px solid #eee', marginBottom: '40px', overflowX: 'auto' }}>
+        <div className="category-tabs">
           {CATEGORIES.map(cat => (
             <button
               key={cat}
@@ -103,13 +103,7 @@ export default function MatchListClient({ items }: { items: MatchRequest[] }) {
         </div>
 
         {/* 카드 그리드 */}
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-          gap: '16px',
-        }}
-          className="match-grid"
-        >
+        <div className="match-grid">
           {filtered.map(item => (
             <Link key={item.id} href={`/match/${item.id}`} style={{ display: 'block' }}>
               <div

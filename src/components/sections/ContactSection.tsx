@@ -21,27 +21,19 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      style={{
-        position: 'relative',
-        padding: '120px 0',
-        backgroundColor: '#111',
-        color: '#fff',
-        overflow: 'hidden',
-      }}
+      className="section-pad"
+      style={{ position: 'relative', backgroundColor: '#111', color: '#fff', overflow: 'hidden' }}
     >
       {/* 배경 오버레이 */}
       <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 0 }} />
 
-      <div
-        className="container"
-        style={{ position: 'relative', zIndex: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '60px', flexWrap: 'wrap' }}
-      >
+      <div className="container contact-layout">
         {/* Left */}
-        <div style={{ flex: '0 0 300px' }}>
+        <div className="contact-left">
           <span style={{ display: 'block', fontSize: '14px', fontWeight: 500, marginBottom: '16px', opacity: 0.6, textTransform: 'uppercase', letterSpacing: '2px' }}>
             Contact Us
           </span>
-          <h2 style={{ fontSize: '44px', fontWeight: 800, lineHeight: 1.2, marginBottom: '24px' }}>
+          <h2 className="contact-title">
             문의하기
           </h2>
           <p style={{ fontSize: '16px', lineHeight: 1.8, opacity: 0.7 }}>
@@ -51,7 +43,7 @@ export default function ContactSection() {
         </div>
 
         {/* Right — Form */}
-        <div style={{ flex: 1, minWidth: '320px', maxWidth: '600px' }}>
+        <div className="contact-right">
           {sent ? (
             <div style={{ textAlign: 'center', padding: '60px 0' }}>
               <p style={{ fontSize: '24px', fontWeight: 800, marginBottom: '12px' }}>✅ 접수 완료</p>

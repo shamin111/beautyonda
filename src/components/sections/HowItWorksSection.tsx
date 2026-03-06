@@ -7,24 +7,18 @@ const STEPS = [
 
 export default function HowItWorksSection() {
   return (
-    <section style={{ backgroundColor: 'var(--color-primary)', padding: '100px 0', color: '#fff' }}>
+    <section className="section-pad" style={{ backgroundColor: 'var(--color-primary)', color: '#fff' }}>
       <div className="container">
         <div style={{ textAlign: 'center', marginBottom: '70px' }}>
-          <h2 style={{ fontSize: '40px', fontWeight: 800, marginBottom: '16px' }}>
+          <h2 className="process-title">
             매칭 프로세스
           </h2>
-          <p style={{ fontSize: '18px', opacity: 0.8, lineHeight: 1.6 }}>
+          <p className="process-subtitle">
             신청부터 레슨까지 4단계로 간단하게
           </p>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, 1fr)',
-            gap: '2px',
-          }}
-        >
+        <div className="process-grid">
           {STEPS.map((step, i) => (
             <div
               key={step.num}

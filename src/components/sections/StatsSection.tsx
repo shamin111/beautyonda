@@ -57,9 +57,9 @@ function StatItem({ value, suffix, label }: { value: number; suffix: string; lab
 
 export default function StatsSection() {
   return (
-    <section style={{ backgroundColor: 'var(--color-bg-cream)', padding: '100px 0' }}>
+    <section className="section-pad" style={{ backgroundColor: 'var(--color-bg-cream)' }}>
       <div className="container">
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '80px', flexWrap: 'wrap' }}>
+        <div className="stats-row">
           {STATS.map(s => (
             <StatItem key={s.label} {...s} />
           ))}

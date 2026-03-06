@@ -5,7 +5,7 @@ export default function Footer() {
     <footer style={{ backgroundColor: '#111', color: '#fff', padding: '60px 0 30px' }}>
       <div className="container">
         {/* Top */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '50px', flexWrap: 'wrap', gap: '40px' }}>
+        <div className="footer-top">
           {/* Brand */}
           <div>
             <div style={{ fontWeight: 800, fontSize: '22px', letterSpacing: '1.4px', marginBottom: '16px' }}>
@@ -18,7 +18,7 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          <div style={{ display: 'flex', gap: '60px', flexWrap: 'wrap' }}>
+          <div className="footer-links">
             <div>
               <p style={{ fontWeight: 700, fontSize: '14px', marginBottom: '16px', color: 'rgba(255,255,255,0.5)', textTransform: 'uppercase', letterSpacing: '1px' }}>서비스</p>
               {[
@@ -48,7 +48,7 @@ export default function Footer() {
         </div>
 
         {/* Divider */}
-        <div style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+        <div className="footer-bottom">
           <p style={{ fontSize: '13px', color: 'rgba(255,255,255,0.4)' }}>
             © {new Date().getFullYear()} Beauty ONDA. All rights reserved.
           </p>

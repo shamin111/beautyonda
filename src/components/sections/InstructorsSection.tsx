@@ -34,7 +34,7 @@ export default function InstructorsSection({ initialData }: { initialData: Instr
     : initialData.filter(i => i.fields?.includes(activeField))
 
   return (
-    <section id="instructors" style={{ padding: '100px 0', backgroundColor: '#fff' }}>
+    <section id="instructors" className="section-pad" style={{ backgroundColor: '#fff' }}>
       <div className="container">
         {/* Header */}
         <div style={{ textAlign: 'center', marginBottom: '50px' }}>
@@ -58,14 +58,7 @@ export default function InstructorsSection({ initialData }: { initialData: Instr
         </div>
 
         {/* Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-            gap: '30px',
-            marginBottom: '50px',
-          }}
-        >
+        <div className="instructor-grid" style={{ marginBottom: '50px' }}>
           {filtered.map(instructor => (
             <Link key={instructor.id} href={`/instructors/${instructor.id}`} style={{ display: 'block' }}>
               <div className="instructor-card">

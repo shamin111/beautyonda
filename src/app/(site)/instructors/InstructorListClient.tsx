@@ -176,7 +176,7 @@ export default function InstructorListClient({ instructors }: Props) {
 
       <div className="container" style={{ paddingTop: '40px', paddingBottom: '80px' }}>
         <div style={{ display: 'flex', gap: '40px', alignItems: 'flex-start' }}>
-          <aside style={{ width: '220px', flexShrink: 0, backgroundColor: '#fff', padding: '28px', border: '1px solid #eee' }}>
+          <aside className="filter-sidebar" style={{ width: '220px', flexShrink: 0, backgroundColor: '#fff', padding: '28px', border: '1px solid #eee' }}>
             <FilterPanel />
           </aside>
 
@@ -186,8 +186,8 @@ export default function InstructorListClient({ instructors }: Props) {
                 총 <strong style={{ color: '#141414' }}>{filtered.length}명</strong>의 강사
               </p>
               <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-                <button onClick={() => setMobileFilter(true)}
-                  style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '8px 14px', border: '1px solid #ddd', background: '#fff', fontSize: '14px', cursor: 'pointer' }}>
+                <button onClick={() => setMobileFilter(true)} className="filter-toggle-btn"
+                  style={{ alignItems: 'center', gap: '6px', padding: '8px 14px', border: '1px solid #ddd', background: '#fff', fontSize: '14px', cursor: 'pointer' }}>
                   <SlidersHorizontal size={14} /> 필터
                 </button>
                 <select value={sort} onChange={e => setSort(e.target.value)}
@@ -229,7 +229,7 @@ export default function InstructorListClient({ instructors }: Props) {
                 <p>필터 조건을 변경해보세요</p>
               </div>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '24px' }}>
+              <div className="instructor-list-grid">
                 {filtered.map(instructor => (
                   <Link key={instructor.id} href={`/instructors/${instructor.id}`} style={{ display: 'block' }}>
                     <div className="instructor-card" style={{ backgroundColor: '#fff', transition: 'box-shadow 0.2s' }}

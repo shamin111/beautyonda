@@ -11,12 +11,7 @@ const MENUS = [
 export default function QuickMenuSection() {
   return (
     <section style={{ backgroundColor: '#fff', padding: '0' }}>
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, 1fr)',
-        }}
-      >
+      <div className="quick-menu-grid">
         {MENUS.map(({ icon: Icon, label, sub, href, bg, color }) => (
           <Link
             key={href}

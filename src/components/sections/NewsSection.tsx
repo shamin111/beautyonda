@@ -23,19 +23,12 @@ const CATEGORY_COLOR: Record<string, string> = {
 
 export default function NewsSection({ news }: { news: NewsItem[] }) {
   return (
-    <section style={{ backgroundColor: 'var(--color-bg-light)', padding: '100px 0' }}>
+    <section className="section-pad" style={{ backgroundColor: 'var(--color-bg-light)' }}>
       <div className="container">
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '320px 1fr',
-            gap: '60px',
-            alignItems: 'start',
-          }}
-        >
+        <div className="news-layout">
           {/* Left */}
           <div>
-            <h2 style={{ fontSize: '40px', fontWeight: 800, lineHeight: 1.3, color: '#141414', marginBottom: '20px' }}>
+            <h2 className="news-title">
               뉴스 &<br />이벤트
             </h2>
             <p style={{ fontSize: '16px', lineHeight: 1.8, color: '#555', marginBottom: '40px' }}>
@@ -80,7 +73,7 @@ export default function NewsSection({ news }: { news: NewsItem[] }) {
                       {item.content.replace(/\n/g, ' ').slice(0, 80)}...
                     </p>
                   </div>
-                  <span style={{ flexShrink: 0, fontSize: '13px', color: '#aaa' }}>{formatDate(item.created_at)}</span>
+                  <span className="news-date-hide" style={{ flexShrink: 0, fontSize: '13px', color: '#aaa' }}>{formatDate(item.created_at)}</span>
                 </div>
               </Link>
             ))}
